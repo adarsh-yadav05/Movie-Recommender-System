@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Premium Movie Recommendation System using HTML, CSS, JS, LocalStorage, and TMDB API.",
   "scripts": {
-    "dev": "npx http-server -p 3000"
+    "dev": "npx http-server -p 3000",
+    "build": "echo 'No build step required'"
   },
   "keywords": [
     "movie",
