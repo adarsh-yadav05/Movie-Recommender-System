@@ -5,7 +5,7 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p';
 
 // Paste your TMDB API Key (v3) or Read Access Bearer Token (v4) here.
 // If set, this will be used automatically and hide/disable the settings page.
-const DEVELOPER_API_KEY = ''; 
+const DEVELOPER_API_KEY = '6b7b415cd0477bae1090ce7e2e9f7e1c';
 
 const API = {
     // Get the active API key
