@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineMatch - Premium Movie Recommendation Dashboard</title>
+    <meta name="description" content="Discover, track, and get personalized movie recommendations using TMDB and local heuristics.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <a href="#" class="logo-container" id="logo-link">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4zM16 11l-4.5 6L8 13.5l-1.5 1.5 3.5 4.5 6.5-8.5L16 11z"/>
+                    </svg>
+                </div>
+                <span class="logo-text">CineMatch</span>
+            </a>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link active" data-target="home-section">
+                            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#explore" class="nav-link" data-target="explore-section">
+                            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                            Explore
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#watchlist" class="nav-link" data-target="watchlist-section">
+                            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                            Watchlist
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#recommendations" class="nav-link" data-target="recommendations-section">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                            For You
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="api-status" id="api-status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Checking TMDB...</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard View Container -->
+        <main class="main-content">
+            <!-- 1. Home Section -->
+            <section id="home-section" class="view-section active">
+                <div class="hero-banner" id="featured-hero">
+                    <div class="hero-overlay">
+                        <span class="hero-tag">Spotlight</span>
+                        <h1 class="hero-title" id="hero-movie-title">Loading Featured Film...</h1>
+                        <div class="hero-meta">
+                            <span class="rating-badge" id="hero-movie-rating">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <span>-</span>
+                            </span>
+                            <span id="hero-movie-year">-</span>
+                            <span id="hero-movie-genres">-</span>
+                        </div>
+                        <p class="hero-overview" id="hero-movie-overview">Waiting for TMDB API configurations...</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary" id="hero-play-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                View Details
+                            </button>
+                            <button class="btn btn-secondary" id="hero-watchlist-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                                Add Watchlist
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Trending Today</h2>
+                    </div>
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="trending-carousel">
+                            <!-- JS will inject movie-cards / skeleton-cards here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Hollywood Hits</h2>
+                    </div>
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="hollywood-carousel">
+                            <!-- JS will inject movie-cards / skeleton-cards here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Bollywood Spotlight</h2>
+                    </div>
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="bollywood-carousel">
+                            <!-- JS will inject movie-cards / skeleton-cards here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Regional Indian Cinema (Tamil, Telugu, Malayalam, Kannada)</h2>
+                    </div>
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="regional-indian-carousel">
+                            <!-- JS will inject movie-cards / skeleton-cards here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Explore Section -->
+            <section id="explore-section" class="view-section">
+                <div class="search-filter-bar">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        <input type="text" class="search-input" id="search-bar" placeholder="Search movies by title, actors, or keywords...">
+                    </div>
+                    
+                    <div class="filters-grid">
+                        <select class="filter-select" id="filter-genre">
+                            <option value="">All Genres</option>
+                            <!-- JS will inject options dynamically -->
+                        </select>
+                        <select class="filter-select" id="filter-year">
+                            <option value="">All Years</option>
+                            <!-- Filled dynamically in app.js -->
+                        </select>
+                        <select class="filter-select" id="filter-rating">
+                            <option value="">Any Rating</option>
+                            <option value="8">8.0+ Highly Rated</option>
+                            <option value="7">7.0+ Recommended</option>
+                            <option value="6">6.0+ Average</option>
+                        </select>
+                        <select class="filter-select" id="filter-sort">
+                            <option value="popularity.desc">Popularity (High to Low)</option>
+                            <option value="vote_average.desc">Rating (High to Low)</option>
+                            <option value="primary_release_date.desc">Release Date (New to Old)</option>
+                            <option value="title.asc">Title (A to Z)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2 class="section-title" id="explore-results-title">Discover Movies</h2>
+                </div>
+                
+                <div class="movie-grid" id="explore-grid">
+                    <!-- Cards or Skeletons injected here -->
+                </div>
+            </section>
+
+            <!-- 3. Watchlist Section -->
+            <section id="watchlist-section" class="view-section">
+                <div class="section-header">
+                    <h2 class="section-title">Your Watchlist</h2>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn btn-secondary btn-sm" id="btn-watchlist-filter-want" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Plan to Watch</button>
+                        <button class="btn btn-secondary btn-sm" id="btn-watchlist-filter-watched" style="padding: 0.5rem 1rem; font-size: 0.8rem;">Watched</button>
+                        <button class="btn btn-secondary btn-sm active" id="btn-watchlist-filter-all" style="padding: 0.5rem 1rem; font-size: 0.8rem; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); border: none;">All</button>
+                    </div>
+                </div>
+
+                <div class="movie-grid" id="watchlist-grid">
+                    <!-- Watchlist movies dynamically rendered here -->
+                </div>
+            </section>
+
+            <!-- 4. Recommendations Section -->
+            <section id="recommendations-section" class="view-section">
+                <div class="rec-intro-card">
+                    <svg class="rec-intro-icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                    </svg>
+                    <div class="rec-intro-text">
+                        <h3 class="rec-intro-title">Personalized Hybrid Recommendations</h3>
+                        <p class="rec-intro-desc">We analyze your watchlist and favorites to identify your top preferred genres. We then blend TMDB's relative similar indexes with discovered candidates in those categories to rank personalized suggestions for you.</p>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2 class="section-title">Picked Just For You</h2>
+                </div>
+
+                <div class="movie-grid" id="recommendations-grid">
+                    <!-- Recommendations injected here -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Movie Details Overlay Modal -->
+    <div class="modal-overlay" id="movie-detail-modal">
+        <div class="modal-container">
+            <button class="modal-close-btn" id="modal-close">&times;</button>
+            
+            <!-- Hero banner inside Modal -->
+            <div class="modal-header-hero" id="modal-hero-banner">
+                <div class="modal-hero-overlay">
+                    <div class="modal-meta-intro">
+                        <h2 class="modal-title" id="modal-movie-title">-</h2>
+                        <div class="modal-info-row">
+                            <span class="rating-badge" id="modal-rating">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <span>-</span>
+                            </span>
+                            <span id="modal-year">-</span>
+                            <span id="modal-runtime">-</span>
+                            <span id="modal-language">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body detail splits -->
+            <div class="modal-body">
+                <!-- Left: Synopsis, Trailer, Actors -->
+                <div class="modal-left-column">
+                    <div>
+                        <h3 class="modal-section-title">Overview</h3>
+                        <p class="movie-synopsis" id="modal-overview">-</p>
+                    </div>
+
+                    <!-- Trailer Section -->
+                    <div id="modal-trailer-section" style="display:none;">
+                        <h3 class="modal-section-title">Official Trailer</h3>
+                        <div class="trailer-container">
+                            <iframe class="trailer-iframe" id="modal-trailer-iframe" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="modal-section-title">Top Cast</h3>
+                        <div class="cast-list" id="modal-cast-list">
+                            <!-- Cast details -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Action checklist, categories, similar movies metadata -->
+                <div class="modal-right-column">
+                    <div class="modal-actions">
+                        <h3 class="modal-section-title">Manage Collection</h3>
+                        <button class="action-btn action-btn-watch" id="modal-btn-watchlist">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                            <span>Add to Watchlist</span>
+                        </button>
+                        <button class="action-btn action-btn-watch" id="modal-btn-watched-status" style="display:none; background:rgba(255,255,255,0.05); border:1px solid var(--border-color); color:#fff;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                            <span>Mark as Watched</span>
+                        </button>
+                        <div class="action-btn-row">
+                            <button class="action-btn action-btn-fav" id="modal-btn-fav">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                <span>Like</span>
+                            </button>
+                            <button class="action-btn action-btn-dislike" id="modal-btn-dislike">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+                                <span>Hide</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="modal-section-title">Genres</h3>
+                        <div class="genres-pill-list" id="modal-genres">
+                            <!-- Genre badges -->
+                        </div>
+                    </div>
+
+                    <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.8rem; color:var(--text-secondary);">
+                        <h3 class="modal-section-title">Details</h3>
+                        <div><strong>Release Date:</strong> <span id="modal-release-date">-</span></div>
+                        <div><strong>Original Language:</strong> <span id="modal-org-lang">-</span></div>
+                        <div><strong>Popularity Score:</strong> <span id="modal-pop-score">-</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast component -->
+    <div id="toast-notification" style="position:fixed; bottom: 2rem; right: 2rem; background: var(--bg-card); border: 1px solid var(--accent-primary); border-radius: var(--border-radius-sm); padding: 1rem 1.5rem; color:#fff; display:none; align-items:center; gap:0.75rem; box-shadow:0 10px 25px rgba(0,0,0,0.5); backdrop-filter:blur(8px); z-index:1100; animation:slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;">
+        <span id="toast-message">Notification message here</span>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>

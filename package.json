@@ -1,0 +1,17 @@
+{
+  "name": "cinematch-movie-recommender",
+  "version": "1.0.0",
+  "description": "Premium Movie Recommendation System using HTML, CSS, JS, LocalStorage, and TMDB API.",
+  "scripts": {
+    "dev": "npx http-server -p 3000"
+  },
+  "keywords": [
+    "movie",
+    "recommendation",
+    "tmdb",
+    "dashboard",
+    "glassmorphism"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}
